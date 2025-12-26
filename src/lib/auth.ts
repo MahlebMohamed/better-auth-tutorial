@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma from "@/lib/prisma";
 import { sendEmail } from "./email";
+import { createAuthMiddleware } from "better-auth/api";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -29,6 +30,17 @@ export const auth = betterAuth({
       },
     },
   },
+  // hooks: {
+  //   before: createAuthMiddleware(async ctx => {
+  //     if (
+  //       ctx.path === '/sign-up/email' ||
+  //       ctx.path === '/reset-password' ||
+  //       ctx.path === '/change-password'
+  //     ) {
+  //       const password = ctx.body.password || ctx.body.newPassword;
+  //     }
+  //   })
+  // }
 });
 
 export type Session = typeof auth.$Infer.Session;
